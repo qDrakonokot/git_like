@@ -5,9 +5,7 @@
             "name": "Debug mygit",
             "type": "cppdbg",
             "request": "launch",
-            // Путь к твоему скомпилированному исполняемому файлу
             "program": "${workspaceFolder}/mygit",
-            // Аргументы, которые ты хочешь передать своей программе (например, "commit")
             "args": ["checkout", "master"], 
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
@@ -21,9 +19,8 @@
                     "ignoreFailures": true
                 }
             ],
-            // Указываем VS Code автоматически запускать make перед отладкой
             "preLaunchTask": "make_build", 
-            "miDebuggerPath": "/usr/bin/gdb" // или просто "gdb"
+            "miDebuggerPath": "/usr/bin/gdb"
         }
     ]
 }
