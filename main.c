@@ -22,7 +22,8 @@ int main (int argc, char* argv[]) {
             printf("\t\tCan accept both files and directories. Minimum 1 file per addition.\n");
             printf("\t" ANSI_COLOR_YELLOW "remove:" ANSI_COLOR_RESET " adds files to the list to be marked as removed to the next commit.\n");
             printf("\t\tCan accept both files and directories. Minimum 1 file per remove.\n");
-            printf("\t" ANSI_COLOR_YELLOW "commit:" ANSI_COLOR_RESET " saves the state. Adds or marks files removed from the change list, and saves the message.\n");
+            printf("\t" ANSI_COLOR_YELLOW "commit:" ANSI_COLOR_RESET " saves the state. Adds or marks files removed from the change list,\n");
+            printf("\t\tand saves the message.\n");
             printf("\t\tReceives a message as input.\n");
             printf("\t" ANSI_COLOR_YELLOW "status:" ANSI_COLOR_RESET " output current list of changes.\n");
             printf("\t" ANSI_COLOR_YELLOW "log:" ANSI_COLOR_RESET " output a chain of commits with their messages and hashes.\n");

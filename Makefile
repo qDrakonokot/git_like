@@ -1,17 +1,42 @@
-CC = gcc
+CC ?= gcc
 
-CFLAGS = -g3 -O0 -Wall -Wextra -Wpedantic -Werror \
-         -fno-omit-frame-pointer \
-         -fsanitize=address,undefined,leak -I.
+ifneq (,$(findstring mingw,$(CC)))
+    TARGET_OS = Windows
+else ifeq ($(OS),Windows_NT)
+    TARGET_OS = Windows
+else
+    TARGET_OS = Linux
+endif
 
-LDFLAGS = -L. -fsanitize=address,undefined,leak
+ifeq ($(TARGET_OS),Windows)
+    EXE = .exe
+    CFLAGS = -O2 -I.
+    LDFLAGS = -L.
+    
+    ifeq ($(OS),Windows_NT)
+        RM = del /Q /F
+    else
+        RM = rm -f
+    endif
+else
+    EXE =
+    CFLAGS = -g3 -O0 -Wall -Wextra -Wpedantic -Werror \
+             -fno-omit-frame-pointer \
+             -fsanitize=address,undefined,leak -I.
+    LDFLAGS = -L. -fsanitize=address,undefined,leak
+    RM = rm -f
+endif
 
 LDLIBS = -lm
 OBJ = main.o funcs.a hashmap.o cai.a utils.a errors.o vector.o
+TARGET = mygit$(EXE)
 
 
-mygit: $(OBJ)
-	$(CC) $(CFLAGS) -o mygit $(OBJ) $(LDFLAGS) $(LDLIBS)
+
+all: $(TARGET)
+
+$(TARGET): $(OBJ)
+	$(CC) $(CFLAGS) -o $(TARGET) $(OBJ) $(LDFLAGS) $(LDLIBS)
 
 main.o: main.c
 	$(CC) $(CFLAGS) -c main.c -o main.o
@@ -61,5 +86,5 @@ index.o: CommitAndIndex/index.c
 hashmap.o: DataStructures/hashmap.c
 	$(CC) $(CFLAGS) -c DataStructures/hashmap.c -o hashmap.o
 
-clean:	
-	rm *.o *.a
+clean:  
+	-$(RM) *.o *.a

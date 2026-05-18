@@ -107,6 +107,11 @@ char* resolve_branch (const char* branchName) {
         return buf;
     }
     else {
+        if (strlen(branchName) < 40){
+            free(tmp);
+            SET_ERR(EINVAL);
+            return NULL;
+        }
         char* detached_hash = (char*)malloc(sizeof(char) * HASH_LEN);
         if (detached_hash == NULL) {
             int errno_s = errno;
