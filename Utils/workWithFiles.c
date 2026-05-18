@@ -10,6 +10,10 @@
 #include <dirent.h>
 #include <unistd.h>
 
+#ifdef _WIN32
+    #define mkdir(path, mode) mkdir(path)
+    #define lstat stat
+#endif
 
 int mkdir_p (const char* dir_path) {
     if (dir_path == NULL || strlen(dir_path) == 0) { SET_ERR(EINVAL); return -1; }
@@ -172,6 +176,8 @@ int get_all_files (const char* path, Vector* vec) {
         
         struct stat st;
         if (lstat(full_path, &st) == 0) {
+
+#ifndef _WIN32
             if (S_ISLNK(st.st_mode)) {
                 char target[PATH_MAX];
                 ssize_t len = readlink(full_path, target, sizeof(target) - 1);
@@ -202,7 +208,9 @@ int get_all_files (const char* path, Vector* vec) {
 
                 continue;
             }
-            else if (S_ISDIR(st.st_mode)) {
+            else
+#endif
+            if (S_ISDIR(st.st_mode)) {
                 if (get_all_files(full_path, vec) != 0) {
                     int errno_s = errno;
                     closedir(dir);
@@ -286,6 +294,7 @@ int remove_all_repofiles (const char* path) {
         
         struct stat st;
         if (lstat(full_path, &st) == 0) {
+#ifndef _WIN32
             if (S_ISLNK(st.st_mode)) {
                 int ret_c = remove(full_path);
                 if (ret_c != 0) {
@@ -296,7 +305,9 @@ int remove_all_repofiles (const char* path) {
                 }
                 continue;
             }
-            else if (S_ISDIR(st.st_mode)) {
+            else 
+#endif
+            if (S_ISDIR(st.st_mode)) {
                 if (remove_all_repofiles(full_path) != 0) {
                     int errno_s = errno;
                     closedir(dir);

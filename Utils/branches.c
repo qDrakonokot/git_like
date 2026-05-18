@@ -6,6 +6,9 @@
 #include <string.h>
 #include <sys/stat.h>
 
+#ifdef _WIN32
+#define lstat stat
+#endif
 
 
 int check_detached () {
@@ -89,10 +92,16 @@ char* resolve_branch (const char* branchName) {
     struct stat st;
     if (lstat(path, &st) == 0) {
         free(tmp);
-        if (S_ISDIR(st.st_mode) || S_ISLNK(st.st_mode)) {
+        if (S_ISDIR(st.st_mode)) {
+            SET_ERR(MY_ERR_BAD_FILE_FORMAT);
+            return NULL; 
+        }
+#ifndef _WIN32
+        else if (S_ISLNK(st.st_mode)) {
             SET_ERR(MY_ERR_BAD_FILE_FORMAT);
             return NULL;
         }
+#endif
         char* buf = read_file(path, NULL);
         if (buf == NULL) return NULL;
         return buf;
