@@ -14,6 +14,7 @@
 #define MY_ERR_HASHMAP_DOES_NOT_EXISTS 1008
 #define MY_ERR_REHASH_FAILED 1009
 #define MY_ERR_HASHMAP_NOT_FOUND 1010
+#define MY_ERR_BRANCH_DOES_NOT_EXIST 1011
 
 #define SET_ERR(code) do { errno = (code); } while(0)
 char* strmyerr(int err);

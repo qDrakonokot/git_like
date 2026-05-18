@@ -40,7 +40,9 @@ char* strmyerr(int err) {
     case MY_ERR_HASHMAP_NOT_FOUND:
         return "Element in hashmap doesn't exists!";
         break;
-    
+    case MY_ERR_BRANCH_DOES_NOT_EXIST:
+        return "Branch does not exists or bad hash!";
+        break;
     default:
         return strerror(err);
     }

@@ -221,9 +221,28 @@ static Vector* get_changed_files (const char* dirpath) {
             if (strcmp(entry->type, ENTRY_TYPE_DEL) == 0) {
                 continue;
             }
+            char* first_slash = strchr(entry->name, '/');
+            if (first_slash != NULL) {
+                *first_slash = '\0';
+                if (strcmp(entry->name, dirpath) == 0 || (strcmp(dirpath, ".") == 0 || strcmp(dirpath, "./") == 0)) {
+                    *first_slash = '/';
+                    goto add_file_as_deleted;
+                }
+                else {
+                    continue;
+                }
+            }
+            else if (strcmp(dirpath, ".") == 0 || strcmp(dirpath, "./") == 0) {
+                goto add_file_as_deleted;
+            }
+            else {
+                continue;
+            }
+
+add_file_as_deleted:
             FileEntry new;
             strcpy(new.name, entry->name);
-            strcpy(new.hash, entry->hash);
+            strcpy(new.hash, NULL_HASH);
             strcpy(new.type, CHANGED_FILE_TYPE_DEL);
             ret_c = vector_push(out_vec, &new);
             if (ret_c != 0) {
@@ -372,14 +391,16 @@ int adv_cmd_branch (const char* branchName) {
         if (ret_c != 0) {
             err = errno;
             fprintf(stderr, ANSI_COLOR_RED "Error while getting branches: %s\n" ANSI_COLOR_RESET, strmyerr(err));
+            vector_destroy(&branches);
             return -1;
         }
         size_t branches_vec_len = vector_get_size(&branches);
         char current[FILE_NAME_MAX];
         ret_c = get_head_branch_name(current);
-        if (ret_c != 0) {
+        if (ret_c != 1 && ret_c != 0) {
             err = errno;
             fprintf(stderr, ANSI_COLOR_RED "Error while getting current branch name: %s\n" ANSI_COLOR_RESET, strmyerr(err));
+            vector_destroy(&branches);
             return -1;
         }
 
@@ -421,6 +442,17 @@ int adv_cmd_switch (const char* branchName) {
     }
 
     if (check_repo() != 0) return -1;
+    ret_c = check_name_per_branch(branchName);
+    if (ret_c != true) {
+        if (ret_c == false) {
+            fprintf(stderr, ANSI_COLOR_RED "Branch doesn't exists\n" ANSI_COLOR_RESET);
+            return -1;
+        }
+        else {
+            fprintf(stderr, ANSI_COLOR_RED "Undefined behaviour\n" ANSI_COLOR_RESET);
+            return -1;
+        }
+    }
 
     char reference[FILE_NAME_MAX];
     snprintf(reference, FILE_NAME_MAX, "ref: %s", branchName);
@@ -988,6 +1020,7 @@ int adv_cmd_status () {
         free(changed_files);
         return -1;
     }
+    // заполняем файлами из индекса
     for (size_t i = 0; i < vec_size; ++i) {
         IndexEntry* entry = (IndexEntry*)vector_get(idx, i);
 
@@ -1165,6 +1198,49 @@ int adv_cmd_log (const char* start_commit, const int* commit_cnt, const char* en
         commit_destroy(commit);
         cnt++;
     }
+    // печатаем последний ненулевой коммит
+    if (strcmp(hash, end_hash) == 0 && strcmp(hash, NULL_HASH) != 0) {
+        char path[PATH_MAX];
+        join_path(path, ".mygit/commits", hash);
+        Commit* commit = commit_init();
+        if (commit == NULL) {
+            err = errno;
+            fprintf(stderr, ANSI_COLOR_RED "Cannot init commit: %s\n" ANSI_COLOR_RESET, strmyerr(err));
+            free(hash);
+            free(end_hash);
+            return -1;
+        }
+        char* buf = read_file(path, NULL);
+        if (buf == NULL) {
+            err = errno;
+            fprintf(stderr, ANSI_COLOR_RED "Cannot read commit file: %s\n" ANSI_COLOR_RESET, strmyerr(err));
+            free(hash);
+            free(end_hash);
+            commit_destroy(commit);
+            return -1;
+        }
+        ret_c = commit_parse(buf, commit);
+        if (ret_c != 0) {
+            err = errno;
+            fprintf(stderr, ANSI_COLOR_RED "Cannot parse commit file: %s\n" ANSI_COLOR_RESET, strmyerr(err));
+            free(hash);
+            free(end_hash);
+            commit_destroy(commit);
+            free(buf);
+            return -1;
+        }
+        struct tm *local = localtime(&commit->timestamp);
+        char time_buf[100];
+        strftime(time_buf, sizeof(time_buf), "%Y-%m-%d %H:%M:%S", local);
+
+        printf(ANSI_COLOR_YELLOW "commit: %s\n" ANSI_COLOR_RESET, hash);
+        printf("Date: %s\n", time_buf);
+        printf(ANSI_BOLD "\n\t%s\n\n" ANSI_COLOR_RESET, commit->message);
+
+        strcpy(hash, commit->parent);
+        free(buf);
+        commit_destroy(commit);
+    }
 
     free(hash);
     free(end_hash);
@@ -1202,14 +1278,6 @@ int adv_cmd_checkout (const char* branchName) {
         return -1;
     }
     
-    // удаляем все файлы из репозитория
-    ret_c = remove_all_repofiles(".");
-    if (ret_c != 0) {
-        err = errno;
-        fprintf(stderr, ANSI_COLOR_RED "Cannot remove files in current directory: %s\n" ANSI_COLOR_RESET, strmyerr(err));
-        return -1;
-    }
-
     // получаем коммит для восстановления
     char* commit_hash = resolve_branch(branchName);
     if (commit_hash == NULL) {
@@ -1242,6 +1310,14 @@ int adv_cmd_checkout (const char* branchName) {
         return -1;
     }
     free(buf);
+
+    // удаляем все файлы из репозитория
+    ret_c = remove_all_repofiles(".");
+    if (ret_c != 0) {
+        err = errno;
+        fprintf(stderr, ANSI_COLOR_RED "Cannot remove files in current directory: %s\n" ANSI_COLOR_RESET, strmyerr(err));
+        return -1;
+    }
 
     // восстанавливаем каждый файл
     size_t com_vec_len = vector_get_size(&commit->files);
@@ -1485,7 +1561,7 @@ int adv_cmd_diff (const char* branchName1, const char* branchName2) {
                     else {
                         printf(ANSI_COLOR_YELLOW "Added" ANSI_COLOR_RESET " file '%s' with hash: %s\n", entry->name, entry->hash);
                         int is_bin = is_file_binary_autopath(entry->hash);
-                        if (is_bin == false) {
+                        if (is_bin == false && strcmp(in_map_entry->type, ENTRY_TYPE_DEL) != 0) {
                             ret_c = print_lines_diff(in_map_entry->hash, entry->hash);
                             if (ret_c != 0) {
                                 err = errno;
@@ -1512,7 +1588,7 @@ int adv_cmd_diff (const char* branchName1, const char* branchName2) {
                 else if (strcmp(entry->type, ENTRY_TYPE_REF) == 0) {
                     printf("File '%s' " ANSI_COLOR_YELLOW "changed" ANSI_COLOR_RESET " in other commit. File hash: %s\n", entry->name, entry->hash);
                     int is_bin = is_file_binary_autopath(entry->hash);
-                    if (is_bin == false) {
+                    if (is_bin == false && strcmp(in_map_entry->type, ENTRY_TYPE_DEL) != 0) {
                         ret_c = print_lines_diff(in_map_entry->hash, entry->hash);
                         if (ret_c != 0) {
                             err = errno;

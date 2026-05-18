@@ -17,40 +17,40 @@ int main (int argc, char* argv[]) {
             printf("\n");
             printf(ANSI_COLOR_MAGENTA "Hello! It's small local git-like system\n" ANSI_COLOR_RESET);
             printf("Below is a set of commands:\n");
-            printf("\t" ANSI_COLOR_YELLOW "init:" ANSI_COLOR_RESET " initialize empty repository with empty start commit.\n");
-            printf("\t" ANSI_COLOR_YELLOW "add:" ANSI_COLOR_RESET " adds files to the list to be added to the next commit.\n");
-            printf("\t\tCan accept both files and directories. Minimum 1 file per addition.\n");
-            printf("\t" ANSI_COLOR_YELLOW "remove:" ANSI_COLOR_RESET " adds files to the list to be marked as removed to the next commit.\n");
-            printf("\t\tCan accept both files and directories. Minimum 1 file per remove.\n");
-            printf("\t" ANSI_COLOR_YELLOW "commit:" ANSI_COLOR_RESET " saves the state. Adds or marks files removed from the change list,\n");
-            printf("\t\tand saves the message.\n");
-            printf("\t\tReceives a message as input.\n");
-            printf("\t" ANSI_COLOR_YELLOW "status:" ANSI_COLOR_RESET " output current list of changes.\n");
-            printf("\t" ANSI_COLOR_YELLOW "log:" ANSI_COLOR_RESET " output a chain of commits with their messages and hashes.\n");
-            printf("\t\tAccepts the --n (number) flag, which limits the output (number) to commits.\n");
-            printf("\t\tIf one commit is specified, then the output will start from it,\n"); 
-            printf("\t\tif 2 in a row, then from the second to the first.\n");
-            printf("\t" ANSI_COLOR_YELLOW "diff:" ANSI_COLOR_RESET " output changes in files in relation to submitted commits\n");
-            printf("\t\tAccepts 2 commits, if the second one is not specified,\n");
-            printf("\t\tthen compares it with the current one.\n");
+            printf("\t" ANSI_COLOR_YELLOW "init:" ANSI_COLOR_RESET "     initialize empty repository with empty start commit.\n");
+            printf("\t" ANSI_COLOR_YELLOW "add:" ANSI_COLOR_RESET "      adds files to the list to be added to the next commit.\n");
+            printf("\t\t  Can accept both files and directories. Minimum 1 file per addition.\n");
+            printf("\t" ANSI_COLOR_YELLOW "remove:" ANSI_COLOR_RESET "   adds files to the list to be marked as removed to the next commit.\n");
+            printf("\t\t  Can accept both files and directories. Minimum 1 file per remove.\n");
+            printf("\t" ANSI_COLOR_YELLOW "commit:" ANSI_COLOR_RESET "   saves the state. Adds or marks files removed from the change list,\n");
+            printf("\t\t  and saves the message.\n");
+            printf("\t\t  Receives a message as input.\n");
+            printf("\t" ANSI_COLOR_YELLOW "status:" ANSI_COLOR_RESET "   output current list of changes.\n");
+            printf("\t" ANSI_COLOR_YELLOW "log:" ANSI_COLOR_RESET "      output a chain of commits with their messages and hashes.\n");
+            printf("\t\t  Accepts the --n (number) flag, which limits the output (number) to commits.\n");
+            printf("\t\t  If one commit is specified, then the output will start from it,\n"); 
+            printf("\t\t  if 2 in a row, then from the second to the first.\n");
+            printf("\t" ANSI_COLOR_YELLOW "diff:" ANSI_COLOR_RESET "     output changes in files in relation to submitted commits\n");
+            printf("\t\t  Accepts 2 commits, if the second one is not specified,\n");
+            printf("\t\t  then compares it with the current one.\n");
             printf("\t" ANSI_COLOR_YELLOW "checkout:" ANSI_COLOR_RESET " restores the state described in the specified commit or branch\n");
-            printf("\t\tIf it is not a branch that is being restored, then all other commands,\n");
-            printf("\t\texcept for restoring and creating and changing a branch, become unavailable\n");
-            printf("\t" ANSI_COLOR_YELLOW "branch:" ANSI_COLOR_RESET " creates a new branch or lists all branches\n");
-            printf("\t" ANSI_COLOR_YELLOW "switch:" ANSI_COLOR_RESET " switches branch\n");
+            printf("\t\t  If it is not a branch that is being restored, then all other commands,\n");
+            printf("\t\t  except for restoring and creating and changing a branch, become unavailable\n");
+            printf("\t" ANSI_COLOR_YELLOW "branch:" ANSI_COLOR_RESET "   creates a new branch or lists all branches\n");
+            printf("\t" ANSI_COLOR_YELLOW "switch:" ANSI_COLOR_RESET "   switches branch\n");
             printf("\n");
             printf("Examples of use: \n");
             printf("\tAll commands that can accept commits can also accept branch names\n");
             printf("\tmygit " ANSI_COLOR_YELLOW "init" ANSI_COLOR_RESET "\n");
-            printf("\tmygit " ANSI_COLOR_YELLOW "add" ANSI_COLOR_RESET " file1 file2 file3 ..\n");
-            printf("\tmygit " ANSI_COLOR_YELLOW "remove" ANSI_COLOR_RESET " file1 file2 file3 ..\n");
-            printf("\tmygit " ANSI_COLOR_YELLOW "commit" ANSI_COLOR_RESET " \"message\"\n");
+            printf("\tmygit " ANSI_COLOR_YELLOW "add" ANSI_COLOR_RESET "      file1 file2 file3 ..\n");
+            printf("\tmygit " ANSI_COLOR_YELLOW "remove" ANSI_COLOR_RESET "   file1 file2 file3 ..\n");
+            printf("\tmygit " ANSI_COLOR_YELLOW "commit" ANSI_COLOR_RESET "   \"message\"\n");
             printf("\tmygit " ANSI_COLOR_YELLOW "status" ANSI_COLOR_RESET "\n");
-            printf("\tmygit " ANSI_COLOR_YELLOW "log" ANSI_COLOR_RESET " --n num commit1 commit2\n");
-            printf("\tmygit " ANSI_COLOR_YELLOW "diff" ANSI_COLOR_RESET " commit1 commit2\n");
+            printf("\tmygit " ANSI_COLOR_YELLOW "log" ANSI_COLOR_RESET "      --n num commit1 commit2\n");
+            printf("\tmygit " ANSI_COLOR_YELLOW "diff" ANSI_COLOR_RESET "     commit1 commit2\n");
             printf("\tmygit " ANSI_COLOR_YELLOW "checkout" ANSI_COLOR_RESET " commit\n");
-            printf("\tmygit " ANSI_COLOR_YELLOW "branch" ANSI_COLOR_RESET " branchName\n");
-            printf("\tmygit " ANSI_COLOR_YELLOW "switch" ANSI_COLOR_RESET " branchName\n");
+            printf("\tmygit " ANSI_COLOR_YELLOW "branch" ANSI_COLOR_RESET "   branchName\n");
+            printf("\tmygit " ANSI_COLOR_YELLOW "switch" ANSI_COLOR_RESET "   branchName\n");
             printf("\n");
         }
         else if (strcmp(argv[1], "init") == 0) {
@@ -193,7 +193,6 @@ int main (int argc, char* argv[]) {
             ret_c = adv_cmd_switch(argv[2]);
             if (ret_c != 0) return -1;
         }
-
         else {
             printf("Undefined command. Type --help for manual\n");
         }
