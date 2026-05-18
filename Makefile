@@ -10,7 +10,7 @@ endif
 
 ifeq ($(TARGET_OS),Windows)
     EXE = .exe
-    CFLAGS = -O2 -I.
+    CFLAGS = -O2 -I. -Wall -Wextra -Wpedantic
     LDFLAGS = -L.
     
     ifeq ($(OS),Windows_NT)

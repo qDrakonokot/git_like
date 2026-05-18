@@ -9,8 +9,25 @@
 #include <string.h>
 #include <sys/stat.h>
 
+#ifdef _WIN32
+#include <windows.h>
+// Включаем поддержку ANSI-кодов в консоли Windows
+void setup_windows_console() {
+    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    if (hOut == INVALID_HANDLE_VALUE) return;
+    DWORD dwMode = 0;
+    if (!GetConsoleMode(hOut, &dwMode)) return;
+    dwMode |= 0x0004; 
+    SetConsoleMode(hOut, dwMode);
+}
+#endif
+
 
 int main (int argc, char* argv[]) {
+    #ifdef _WIN32
+    setup_windows_console();
+    #endif
+    
     int ret_c = 0;
     if (argc >= 2) {
         if (strcmp(argv[1], "--help") == 0) {
