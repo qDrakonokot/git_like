@@ -37,6 +37,7 @@ int main (int argc, char* argv[]) {
             printf("\t" ANSI_COLOR_YELLOW "init:" ANSI_COLOR_RESET "     initialize empty repository with empty start commit.\n");
             printf("\t" ANSI_COLOR_YELLOW "add:" ANSI_COLOR_RESET "      adds files to the list to be added to the next commit.\n");
             printf("\t\t  Can accept both files and directories. Minimum 1 file per addition.\n");
+            printf("\t\t  Also can marked deleted file as deleted automaticly.\n");
             printf("\t" ANSI_COLOR_YELLOW "remove:" ANSI_COLOR_RESET "   adds files to the list to be marked as removed to the next commit.\n");
             printf("\t\t  Can accept both files and directories. Minimum 1 file per remove.\n");
             printf("\t" ANSI_COLOR_YELLOW "commit:" ANSI_COLOR_RESET "   saves the state. Adds or marks files removed from the change list,\n");
@@ -53,7 +54,7 @@ int main (int argc, char* argv[]) {
             printf("\t" ANSI_COLOR_YELLOW "checkout:" ANSI_COLOR_RESET " restores the state described in the specified commit or branch\n");
             printf("\t\t  If it is not a branch that is being restored, then all other commands,\n");
             printf("\t\t  except for restoring and creating and changing a branch, become unavailable\n");
-            printf("\t" ANSI_COLOR_YELLOW "branch:" ANSI_COLOR_RESET "   creates a new branch or lists all branches\n");
+            printf("\t" ANSI_COLOR_YELLOW "branch:" ANSI_COLOR_RESET "   creates a new branch or shows lists all branches\n");
             printf("\t" ANSI_COLOR_YELLOW "switch:" ANSI_COLOR_RESET "   switches branch\n");
             printf("\n");
             printf("Examples of use: \n");
