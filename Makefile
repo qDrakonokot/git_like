@@ -87,4 +87,4 @@ hashmap.o: DataStructures/hashmap.c
 	$(CC) $(CFLAGS) -c DataStructures/hashmap.c -o hashmap.o
 
 clean:  
-	-$(RM) *.o *.a
+	-$(RM) *.o *.a $(TARGET)
