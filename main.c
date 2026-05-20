@@ -1,3 +1,5 @@
+// чтобы сделать пулл реквест
+
 #include "GeneralFunc/baseGitFunc.h"
 #include "GeneralFunc/advancedGitFunc.h"
 #include "CommitAndIndex/fileEntry.h"
