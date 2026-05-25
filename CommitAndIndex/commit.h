@@ -15,7 +15,7 @@ typedef struct {
     Vector files;
 } Commit;
 
-Commit* commit_init();
+Commit* commit_init(void);
 int commit_set_message(Commit* commit, const char* msg);
 int commit_add_file(Commit* commit, const char* name, const char* type, const char* hash);
 int commit_parse(const char* text, Commit* commit);

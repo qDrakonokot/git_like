@@ -13,7 +13,7 @@
 
 // читает индекс из файла индекса. Возвращет вектор на куче.
 // То есть требует как уничтожение внутренностей вектора так и очистку самого вектора с кучи
-Vector* index_read() {
+Vector* index_read(void) {
     char* index_data = read_file(".mygit/index", NULL);
     if (index_data == NULL) {
         Vector* null_vec = (Vector*)malloc(sizeof(Vector));

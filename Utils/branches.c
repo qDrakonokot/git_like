@@ -11,7 +11,7 @@
 #endif
 
 
-int check_detached () {
+int check_detached (void) {
     char* buf = read_file(".mygit/HEAD", NULL);
     if (buf == NULL) return -1;
 
@@ -129,7 +129,7 @@ char* resolve_branch (const char* branchName) {
 
 // вызывающий получает память во владение
 // хеш актуального коммита
-char* get_head_commit_hash () {
+char* get_head_commit_hash (void) {
 
     char* buf = read_file(".mygit/HEAD", NULL);
     if (buf == NULL) return NULL;

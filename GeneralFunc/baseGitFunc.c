@@ -15,7 +15,7 @@
 #include <sys/stat.h>
 
 // проверка существует ли папка .mygit
-static int check_repo () {
+static int check_repo (void) {
     struct stat st;
     if (stat(".mygit", &st) != 0 || !S_ISDIR(st.st_mode)) {
         fprintf(stderr, "Current directory not a repository: .mygit not exists\n");
@@ -25,7 +25,7 @@ static int check_repo () {
 }
 
 // инициализация репозитория
-int cmd_init () {
+int cmd_init (void) {
     int ret_c = 0, err = 0;
     struct stat st;
     // проверяем существование папки гита
@@ -370,7 +370,7 @@ int cmd_commit (const char* message) {
 }
 
 // вывод списка файлов из индекса и их состояние
-int cmd_status () {
+int cmd_status (void) {
     int ret_c = 0, err = 0;
 
     if (check_repo () != 0) return -1;

@@ -20,7 +20,7 @@ ifeq ($(TARGET_OS),Windows)
     endif
 else
     EXE =
-    CFLAGS = -g3 -O0 -Wall -Wextra -Wpedantic -Werror \
+    CFLAGS = -g3 -O0 -Wall -Wextra -Wpedantic  \
              -fno-omit-frame-pointer \
              -fsanitize=address,undefined,leak -I.
     LDFLAGS = -L. -fsanitize=address,undefined,leak

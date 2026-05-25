@@ -100,7 +100,7 @@ int main (int argc, char* argv[]) {
             }
         }
         else if (strcmp(argv[1], "commit") == 0) {
-            if (argc < 3 && argc > 3) {
+            if (argc != 3) {
                 fprintf(stderr, "Invalid command. Type --help for manual\n");
                 return -1;
             }
@@ -174,7 +174,7 @@ int main (int argc, char* argv[]) {
             }
         }
         else if (strcmp(argv[1], "diff") == 0) {
-            if (argc < 3 && argc > 4) {
+            if (argc < 3 || argc > 4) {
                 fprintf(stderr, "Invalid command. Type --help for manual\n");
                 return -1;
             }
@@ -182,7 +182,7 @@ int main (int argc, char* argv[]) {
             if (ret_c != 0) return -1;
         }
         else if (strcmp(argv[1], "checkout") == 0) {
-            if (argc < 3 && argc > 3) {
+            if (argc != 3) {
                 fprintf(stderr, "Invalid command. Type --help for manual\n");
                 return -1;
             }
@@ -204,7 +204,7 @@ int main (int argc, char* argv[]) {
             }
         }
         else if (strcmp(argv[1], "switch") == 0) {
-            if (argc < 3 && argc > 3) {
+            if (argc != 3) {
                 fprintf(stderr, "Invalid command. Type --help for manual\n");
                 return -1;
             }

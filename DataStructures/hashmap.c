@@ -5,6 +5,14 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define MAP_INIT_SIZE 113
+#define LOAD_FACTOR 0.75
+
+typedef enum {
+    EMPTY,      
+    OCCUPIED,   
+    DELETED     
+} EntryStatus;
 
 static FileEntry* map = NULL;
 static EntryStatus* status = NULL;
@@ -74,7 +82,7 @@ static int hashmap_rehash(size_t new_size) {
 }
 
 
-int hashmap_init () {
+int hashmap_init (void) {
     map = (FileEntry*)malloc(MAP_INIT_SIZE * sizeof(FileEntry));
     if (map == NULL) return -1;
     status = (EntryStatus*)malloc(MAP_INIT_SIZE * sizeof(EntryStatus));
@@ -180,7 +188,7 @@ FileEntry* hashmap_get_entry(const char *name) {
 }
 
 
-void hashmap_destroy () {
+void hashmap_destroy (void) {
     if (initialized == 0) { SET_ERR(MY_ERR_HASHMAP_DOES_NOT_EXISTS); return; }
     free(map);
     free(status);

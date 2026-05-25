@@ -12,7 +12,7 @@
 #include <time.h>
 
 // инициализирует пустой коммит
-Commit* commit_init() {
+Commit* commit_init(void) {
     Commit* commit = (Commit*)malloc(sizeof(Commit));
     if (commit == NULL) return NULL;
     memset(commit->parent, '0', HASH_LEN);

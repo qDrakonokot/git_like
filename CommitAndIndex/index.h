@@ -9,7 +9,7 @@
 
 typedef FileEntry IndexEntry;
 
-Vector* index_read();
+Vector* index_read(void);
 int index_write(const Vector* entries);
 int index_add(const char* filename);
 int index_del(const char* filename);

@@ -27,7 +27,7 @@ static inline int is_file_binary_autopath (const char* file_hash) {
 
 
 // проверка существует ли папка .mygit
-static int check_repo () {
+static int check_repo (void) {
     struct stat st;
     if (stat(".mygit", &st) != 0 || !S_ISDIR(st.st_mode)) {
         fprintf(stderr, ANSI_COLOR_RED "Current directory not a repository: .mygit not exists\n" ANSI_COLOR_RESET);
@@ -277,7 +277,7 @@ add_file_as_deleted:
 
 
 // инициализация репозитория
-int adv_cmd_init () {
+int adv_cmd_init (void) {
     int ret_c = 0, err = 0;
     struct stat st;
     // проверяем существование папки гита
@@ -860,7 +860,7 @@ int adv_cmd_remove (const char* main_path) {
 
 
 // вывод списка файлов из индекса и их состояние + невнесенные изменения в индекс
-int adv_cmd_status () {
+int adv_cmd_status (void) {
     int ret_c = 0, err = 0;
 
     if (check_repo () != 0) return -1;

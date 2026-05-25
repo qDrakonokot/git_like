@@ -10,11 +10,11 @@
 #define ANSI_COLOR_CYAN    "\033[36m"
 #define ANSI_COLOR_RESET   "\033[0m"
 
-int cmd_init ();
+int cmd_init (void);
 int cmd_add (const char* filename);
 int cmd_remove (const char* filename);
 int cmd_commit (const char* message);
-int cmd_status ();
+int cmd_status (void);
 int cmd_log (const char* start_commit_hash, const int* commit_cnt);
 int cmd_diff (const char* target_commit_hash);
 int cmd_checkout (const char* commit_hash, const char* filename);
