@@ -5,7 +5,7 @@
 #include "DataStructures/vector.h"
 #include "fileEntry.h"
 
-#define BUFFER_MAX_LEN 16384
+#define BUFFER_MAX_LEN (1<<16)
 
 typedef struct {
     char own_hash[HASH_LEN];
