@@ -1250,7 +1250,7 @@ int adv_cmd_log (const char* start_commit, const int* commit_cnt, const char* en
 
 
 // восстановление состояния репозитория по комииту
-int adv_cmd_checkout (const char* branchName) {
+int adv_cmd_checkout (const char* branchName, const char* fileName) {
     if (branchName == NULL) { fprintf(stderr, ANSI_COLOR_RED "Argument invalid\n" ANSI_COLOR_RESET); return -1; }
     int ret_c = 0, err = 0;
 
@@ -1285,6 +1285,16 @@ int adv_cmd_checkout (const char* branchName) {
         fprintf(stderr, ANSI_COLOR_RED "Cannot resolve branch: %s\n" ANSI_COLOR_RESET, strmyerr(err));
         return -1;
     }
+
+    // проверяем, пришел ли запрос на восстановления одного файла
+    if (fileName != NULL) {
+        ret_c = cmd_checkout(commit_hash, fileName);
+        int errno_s = errno;
+        free(commit_hash);
+        errno = errno_s;
+        return ret_c;
+    }
+
     char path[PATH_MAX];
     join_path(path, ".mygit/commits", commit_hash);
     char* buf = read_file(path, NULL);

@@ -182,11 +182,11 @@ int main (int argc, char* argv[]) {
             if (ret_c != 0) return -1;
         }
         else if (strcmp(argv[1], "checkout") == 0) {
-            if (argc != 3) {
+            if (argc < 3 || argc > 4) {
                 fprintf(stderr, "Invalid command. Type --help for manual\n");
                 return -1;
             }
-            ret_c = adv_cmd_checkout(argv[2]);
+            ret_c = adv_cmd_checkout(argv[2], argv[3]);
             if (ret_c != 0) return -1;
         }
         else if (strcmp(argv[1], "branch") == 0) {

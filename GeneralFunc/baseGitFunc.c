@@ -782,7 +782,7 @@ int cmd_checkout (const char* commit_hash, const char* filename) {
         return -1;
     }
     
-    // читаем файл и записываем восстанавливаем в репозитории
+    // читаем файл и записываем, восстанавливаем в репозитории
     join_path(path, ".mygit/files", hash);
     size_t write_size;
     buf = read_file(path, &write_size);
